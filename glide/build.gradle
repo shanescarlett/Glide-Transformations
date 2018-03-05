@@ -1,0 +1,78 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+//Maven Variables
+group = 'net.scarlettsystems.android'
+version = project.property('glide_transformations_version')
+archivesBaseName = 'glidetransformations'
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName project.property('glide_transformations_version')
+        renderscriptSupportModeEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+bintray {
+    user = properties.getProperty('bintray_user')
+    key = properties.getProperty('bintray_apikey')
+    configurations = ['archives']
+    pkg {
+        repo = 'net.scarlettsystems.android'
+        name = 'glide'
+        userOrg = user
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/shanescarlett/Glide-Transformations'
+        version {
+            name = project.property('glide_transformations_version')
+            desc = project.property('glide_transformations_version_description')
+            vcsTag = project.property('glide_transformations_version')
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            group 'net.scarlettsystems.android'
+            artifactId 'glide'
+            version project.property('glide_transformations_version')
+        }
+    }
+}
+
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+artifacts {
+    archives generateSourcesJar
+}

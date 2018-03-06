@@ -27,9 +27,9 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 
 
-public class SoftShadow extends BitmapTransformation
+public class Shadow extends BitmapTransformation
 {
-	private static final String ID = "net.scarlettsystems.android.transformations.glide.SoftShadow";
+	private static final String ID = "net.scarlettsystems.android.transformations.glide.Shadow";
 	private static final byte[] ID_BYTES = ID.getBytes();
 	private Context mContext;
 	private float blurRadius, elevation, angle;
@@ -58,7 +58,7 @@ public class SoftShadow extends BitmapTransformation
 		int SOUTHEAST = 7;
 	}
 
-	public SoftShadow(Context context)
+	public Shadow(Context context)
 	{
 		mContext = context;
 		this.blurRadius = 0;
@@ -67,37 +67,37 @@ public class SoftShadow extends BitmapTransformation
 		this.colour = Color.argb(128,0,0,0);
 	}
 
-	public SoftShadow setBlurRadius(float blurRadius)
+	public Shadow setBlurRadius(float blurRadius)
 	{
 		this.blurRadius = blurRadius;
 		return this;
 	}
 
-	public SoftShadow setElevation(float elevation)
+	public Shadow setElevation(float elevation)
 	{
 		this.elevation = elevation;
 		return this;
 	}
 
-	public SoftShadow setAngle(float angle)
+	public Shadow setAngle(float angle)
 	{
 		this.angle = angle;
 		return this;
 	}
 
-	public SoftShadow setDirection(@Direction int d)
+	public Shadow setDirection(@Direction int d)
 	{
 		this.angle = getAngle(d);
 		return this;
 	}
 
-	public SoftShadow setShadowColour(@ColorInt int colour)
+	public Shadow setShadowColour(@ColorInt int colour)
 	{
 		this.colour = colour;
 		return this;
 	}
 
-	public SoftShadow setShadowColourRes(@ColorRes int res)
+	public Shadow setShadowColourRes(@ColorRes int res)
 	{
 		if(Build.VERSION.SDK_INT < 23)
 		{
@@ -165,27 +165,14 @@ public class SoftShadow extends BitmapTransformation
 		//Output
 		shadow.recycle();
 		return bitmap;
-
-	}
-
-	private void blur(Bitmap bitmap, float radius)
-	{
-		final RenderScript rs = RenderScript.create(mContext);
-		final Allocation input = Allocation.createFromBitmap( rs, bitmap, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT );
-		final Allocation output = Allocation.createTyped( rs, input.getType() );
-		final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create( rs, Element.U8_4( rs ) );
-		script.setRadius( radius );
-		script.setInput( input );
-		script.forEach( output );
-		output.copyTo( bitmap );
 	}
 
 	@Override
 	public boolean equals(Object object)
 	{
-		if (object instanceof SoftShadow)
+		if (object instanceof Shadow)
 		{
-			SoftShadow other = (SoftShadow) object;
+			Shadow other = (Shadow) object;
 			return blurRadius == other.blurRadius
 					&& elevation == other.elevation
 					&& angle == other.angle

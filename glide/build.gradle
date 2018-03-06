@@ -8,13 +8,13 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 //Maven Variables
 group = 'net.scarlettsystems.android'
 version = project.property('glide_transformations_version')
-archivesBaseName = 'glidetransformations'
+archivesBaseName = 'glide'
 
 android {
     compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
         versionName project.property('glide_transformations_version')
@@ -45,7 +45,7 @@ bintray {
     key = properties.getProperty('bintray_apikey')
     configurations = ['archives']
     pkg {
-        repo = 'net.scarlettsystems.android'
+        repo = 'Glide-Transformations'
         name = 'glide'
         userOrg = user
         licenses = ['Apache-2.0']

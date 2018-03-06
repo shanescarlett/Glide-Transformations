@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class GaussianBlur extends BitmapTransformation
 {
-	private static final String ID = "net.scarlettsystems.android.transformations.glide.SoftShadow";
+	private static final String ID = "net.scarlettsystems.android.transformations.glide.GaussianBlur";
 	private static final byte[] ID_BYTES = ID.getBytes();
 	private Context mContext;
 	private float blurRadius;

@@ -32,7 +32,7 @@ dependencies {
 
 | Transformation        | Image           | Description  |
 | ------------- |:-------------------:| ---|
-| Original      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Original.png" width="60%"/>| Desaturates image and produces a greyscale result. |
+| Original      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Original.png" width="60%"/>| The original image. |
 | Greyscale      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Greyscale.png" width="60%" />| Desaturates image and produces a greyscale result. |
 | GaussianBlur      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/GaussianBlur.png" width="60%" />| Applies RenderScript Gaussian blur with specified radius. |
 | Mosaic      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Mosaic.png" width="60%" />| Applies a mosaic or pixellation effect. |

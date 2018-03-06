@@ -43,7 +43,7 @@ public class Greyscale extends BitmapTransformation
 	@Override
 	public boolean equals(Object object)
 	{
-		if (object instanceof Padding)
+		if (object instanceof Greyscale)
 		{
 			return true;
 		}

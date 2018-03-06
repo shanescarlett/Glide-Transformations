@@ -22,7 +22,7 @@ Add the following dependency in the app's build.gradle file:
 
 ```java
 dependencies {
-    implementation 'net.scarlettsystems.android:glide:0.0.1'
+    implementation 'net.scarlettsystems.android:glide:0.0.2'
 }
 ```
 
@@ -72,7 +72,7 @@ Transformation t = new Shadow(this).setBlurRadius(10).setElevation(10).setAngle(
 
 ## Versioning
 
-Current version: 0.0.1
+Current version: 0.0.2
 
 ## Authors
 

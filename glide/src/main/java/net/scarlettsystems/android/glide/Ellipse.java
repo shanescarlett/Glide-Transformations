@@ -24,7 +24,13 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
-
+/**
+ * Ellipse.java
+ * Crops the image by a configurable ellipse shape.
+ *
+ * @author Shane Scarlett
+ * @version 1.0.0
+ */
 public class Ellipse extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Ellipse";
@@ -33,6 +39,11 @@ public class Ellipse extends BitmapTransformation
 	private float xDiameter, yDiameter, angle;
 	private boolean isFraction, isCircle;
 	private int colour;
+
+	/**
+	 * Denotes that the annotated element represents a cardinal direction
+	 * int, of north, east etc.
+	 */
 	@Retention(RetentionPolicy.SOURCE)
 	@IntDef
 			({
@@ -57,9 +68,16 @@ public class Ellipse extends BitmapTransformation
 		int SOUTHEAST = 7;
 	}
 
+	/**
+	 * Default constructor. If nothing else is configured, the transformation
+	 * will produce a perfect circle crop with a transparent background.
+	 *
+	 * @param  context  current context
+	 */
 	public Ellipse(Context context)
 	{
 		mContext = context;
+		this.isCircle = true;
 		this.isFraction = true;
 		this.xDiameter = 1f;
 		this.yDiameter = 1f;
@@ -67,6 +85,12 @@ public class Ellipse extends BitmapTransformation
 		this.colour = Color.argb(0,0,0,0);
 	}
 
+	/**
+	 * Configures transformation to crop as a circle with a specified diameter.
+	 *
+	 * @param  size  diameter of the circle in pixels
+	 * @return      returns self
+	 */
 	public Ellipse setCircleSize(int size)
 	{
 		this.isCircle = true;
@@ -76,6 +100,17 @@ public class Ellipse extends BitmapTransformation
 		return this;
 	}
 
+	/**
+	 * Configures transformation to crop as a circle with a diameter given as a fraction
+	 * of the source image's width or height. If the image is not square, the transformation
+	 * will associate the fraction with the smaller dimension, and fit the circle within image
+	 * bounds.
+	 * For example, applying setCircleSizeFraction(0.4) on a 200 by 100 image will produce
+	 * a circle of 80 width and 80 height.
+	 *
+	 * @param  fraction the circle's diameter as a portion of the image's width or height
+	 * @return      returns self
+	 */
 	public Ellipse setCircleSizeFraction(float fraction)
 	{
 		this.isCircle = true;
@@ -85,6 +120,13 @@ public class Ellipse extends BitmapTransformation
 		return this;
 	}
 
+	/**
+	 * Configures transformation to crop as an ellipse given by its x and y diameters.
+	 *
+	 * @param x the x diameter of the ellipse
+	 * @param y the y diameter of the ellipse
+	 * @return returns self
+	 */
 	public Ellipse setSize(int x, int y)
 	{
 		this.isCircle = false;
@@ -94,6 +136,16 @@ public class Ellipse extends BitmapTransformation
 		return this;
 	}
 
+	/**
+	 * Configures transformation to crop as an ellipse with diameters x and y, given by
+	 * fractions of their respective image dimensions.
+	 * For example, applying setSizeFraction(0.5, 0.8) on a 100 by 100 image will produce
+	 * an ellipse of 50 width and 80 height.
+	 *
+	 * @param x the x diameter of the ellipse
+	 * @param y the y diameter of the ellipse
+	 * @return returns self
+	 */
 	public Ellipse setSizeFraction(float x, float y)
 	{
 		this.isCircle = false;
@@ -103,18 +155,41 @@ public class Ellipse extends BitmapTransformation
 		return this;
 	}
 
+	/**
+	 * Sets the angle at which the cropping ellipse is rotated. Rotation is applied after
+	 * the x and y dimensions are determined. 0° represents no change and positive angles
+	 * represent counter-clockwise rotation.
+	 * Setting this value when configured as a circle has no effect.
+	 *
+	 * @param angle angle of rotation in degrees
+	 * @return returns self
+	 */
 	public Ellipse setAngle(int angle)
 	{
 		this.angle = angle;
 		return this;
 	}
 
+	/**
+	 * Sets colour of the cropped background.
+	 * Background is transparent by default.
+	 *
+	 * @param colour the colour as a @ColorInt
+	 * @return returns self
+	 */
 	public Ellipse setColour(@ColorInt int colour)
 	{
 		this.colour = colour;
 		return this;
 	}
 
+	/**
+	 * Sets colour of the cropped background by resource.
+	 * Background is transparent by default.
+	 *
+	 * @param res the colour as a @ColorRes
+	 * @return returns self
+	 */
 	public Ellipse setColourRes(@ColorRes int res)
 	{
 		if(Build.VERSION.SDK_INT < 23)
@@ -173,9 +248,11 @@ public class Ellipse extends BitmapTransformation
 		paint.setAntiAlias(true);
 		paint.setFilterBitmap(true);
 		Canvas canvas = new Canvas(bitmap);
-		canvas.rotate(-angle, pivotX, pivotY);
+		if(!isCircle)
+			canvas.rotate(-angle, pivotX, pivotY);
 		canvas.drawOval(ellipseBounds, paint);
-		canvas.rotate(angle, pivotX, pivotY);
+		if(!isCircle)
+			canvas.rotate(angle, pivotX, pivotY);
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 		canvas.drawBitmap(source, null, bitmapBounds, paint);
 		canvas.drawColor(colour, PorterDuff.Mode.DST_OVER);

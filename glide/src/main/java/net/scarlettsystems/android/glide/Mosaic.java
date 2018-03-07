@@ -14,6 +14,13 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
+/**
+ * Mosaic.java
+ * Applies a mosaic or pixellation effect to the image.
+ *
+ * @author Shane Scarlett
+ * @version 1.0.0
+ */
 public class Mosaic extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Mosaic";
@@ -22,12 +29,29 @@ public class Mosaic extends BitmapTransformation
 	private Integer xPixels, yPixels;
 	private float factor = 1f;
 
-
+	/**
+	 * Default constructor.
+	 * By default and without any further configuration, the transformation
+	 * will do nothing.
+	 *
+	 * @param  context  current context
+	 */
 	public Mosaic(Context context)
 	{
 		mContext = context;
 	}
 
+	/**
+	 * Sets the number of pixels that the pixellated image should be wide.
+	 * The height is calculated maintaining the source image's aspect ratio.
+	 * Inputs greater than the source image's width will return a copy
+	 * of the original image.
+	 *
+	 * Note: subsequent changes of configuration will overwrite the previous setting.
+	 *
+	 * @param  widthPixels  number of pixels in the result image's x dimension
+	 * @return      returns self
+	 */
 	public Mosaic setByWidth(int widthPixels)
 	{
 		xPixels = Math.max(1, widthPixels);
@@ -35,6 +59,17 @@ public class Mosaic extends BitmapTransformation
 		return this;
 	}
 
+	/**
+	 * Sets the number of pixels that the pixellated image should be high.
+	 * The width is calculated maintaining the source image's aspect ratio.
+	 * Inputs greater than the source image's height will return a copy
+	 * of the original image.
+	 *
+	 * Note: subsequent changes of configuration will overwrite the previous setting.
+	 *
+	 * @param  heightPixels  number of pixels in the result image's y dimension
+	 * @return      returns self
+	 */
 	public Mosaic setByHeight(int heightPixels)
 	{
 		xPixels = -1;
@@ -42,7 +77,18 @@ public class Mosaic extends BitmapTransformation
 		return this;
 	}
 
-	public Mosaic setByFactor(int downsizeFactor)
+	/**
+	 * Sets a downsizing factor for the pixellation. For example,
+	 * a factor of 2 will halve the number of pixels in both the x and y
+	 * dimensions. Factors smaller than or equal to 1 will return
+	 * a copy of the original image.
+	 *
+	 * Note: subsequent changes of configuration will overwrite the previous setting.
+	 *
+	 * @param  downsizeFactor  factor to scale the image by
+	 * @return returns self
+	 */
+	public Mosaic setByFactor(float downsizeFactor)
 	{
 		xPixels = -1;
 		yPixels = -1;

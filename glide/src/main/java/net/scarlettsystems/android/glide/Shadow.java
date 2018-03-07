@@ -26,7 +26,21 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
-
+/**
+ * Shadow.java
+ * This transformation applies a shadow intrinsically to the bitmap.
+ * This is useful for images with complex shapes where Android does
+ * not support elevation shadows. The colour of the shadow, its blur
+ * radius, and offset from the image can all be configured.
+ * <p>
+ * Images should be padded with transparent pixels by at least the
+ * blur radius plus the elevation in order for the drawn shadow to
+ * display properly without clipping. See: Padding
+ *
+ * @author Shane Scarlett
+ * @version 1.0.0
+ * @see Padding
+ */
 public class Shadow extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Shadow";
@@ -58,6 +72,13 @@ public class Shadow extends BitmapTransformation
 		int SOUTHEAST = 7;
 	}
 
+	/**
+	 * Default constructor.
+	 * The shadow is set at 0 elevation and 0 blur, with black colour at 50%
+	 * opacity, by default.
+	 *
+	 * @param  context  current context
+	 */
 	public Shadow(Context context)
 	{
 		mContext = context;
@@ -67,36 +88,80 @@ public class Shadow extends BitmapTransformation
 		this.colour = Color.argb(128,0,0,0);
 	}
 
+	/**
+	 * Sets the blur radius of the shadow.
+	 * It is advised to pad the image by at least this amount plus the
+	 * elevation to prevent clipping of the shadow.
+	 *
+	 * @param  blurRadius  elevation in pixels
+	 * @return      returns self
+	 */
 	public Shadow setBlurRadius(float blurRadius)
 	{
 		this.blurRadius = blurRadius;
 		return this;
 	}
 
+	/**
+	 * Sets the elevation, or how much the shadow is offset from the image.
+	 * It is advised to pad the image by at least this amount plus the
+	 * blur radius to prevent clipping of the shadow.
+	 *
+	 * @param  elevation  elevation in pixels
+	 * @return      returns self
+	 */
 	public Shadow setElevation(float elevation)
 	{
 		this.elevation = elevation;
 		return this;
 	}
 
+	/**
+	 * Sets the angle in which the shadow is offset from the image.
+	 * Zero degrees indicates due west, and angles progress counter-clockwise.
+	 * Angles larger than 360° or smaller than 0° simply indicate wraps around the circle.
+	 *
+	 * @param  angle  the angle in degrees
+	 * @return      returns self
+	 */
 	public Shadow setAngle(float angle)
 	{
 		this.angle = angle;
 		return this;
 	}
 
+	/**
+	 * Sets the cardinal direction in which the shadow is offset from the image.
+	 *
+	 * @param  d  the cardinal direction as a @Direction
+	 * @return      returns self
+	 */
 	public Shadow setDirection(@Direction int d)
 	{
 		this.angle = getAngle(d);
 		return this;
 	}
 
+	/**
+	 * Sets the shadow's colour.
+	 * Shadow is drawn black with 50% opacity by default.
+	 *
+	 * @param  colour  the colour as a @ColorInt
+	 * @return      returns self
+	 */
 	public Shadow setShadowColour(@ColorInt int colour)
 	{
 		this.colour = colour;
 		return this;
 	}
 
+	/**
+	 * Sets the shadow's colour by colour resource.
+	 * Shadow is drawn black with 50% opacity by default.
+	 *
+	 * @param  res  the colour resource as a @ColorRes
+	 * @return      returns self
+	 */
 	public Shadow setShadowColourRes(@ColorRes int res)
 	{
 		if(Build.VERSION.SDK_INT < 23)

@@ -18,6 +18,15 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
+/**
+ * Padding.java
+ * This transformation adds padding intrinsically to the bitmap.
+ * This is used to add a coloured border to the image, or create
+ * transparent padding to prevent clipping when drawing shadows.
+ *
+ * @author Shane Scarlett
+ * @version 1.0.0
+ */
 public class Padding extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Padding";
@@ -26,19 +35,40 @@ public class Padding extends BitmapTransformation
 	private int padding;
 	private int colour = Color.argb(0,0,0,0);
 
-
+	/**
+	 * Default constructor.
+	 * The padding is transparent by default.
+	 *
+	 * @param  context  current context
+	 * @param  padding  thickness of padding in pixels
+	 * @return      returns self
+	 */
 	public Padding(Context context, int padding)
 	{
 		mContext = context;
 		this.padding = padding;
 	}
 
+	/**
+	 * Sets the colour of the padding.
+	 * The padding is transparent by default.
+	 *
+	 * @param  colour  the colour as a @ColorInt
+	 * @return      returns self
+	 */
 	public Padding setColour(@ColorInt int colour)
 	{
 		this.colour = colour;
 		return this;
 	}
 
+	/**
+	 * Sets the colour of the padding by resource.
+	 * The padding is transparent by default.
+	 *
+	 * @param  res  the colour as a @ColorRes
+	 * @return      returns self
+	 */
 	public Padding setColourRes(@ColorRes int res)
 	{
 		if(Build.VERSION.SDK_INT < 23)

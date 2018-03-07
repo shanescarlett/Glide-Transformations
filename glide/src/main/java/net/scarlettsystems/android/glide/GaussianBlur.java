@@ -18,7 +18,13 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
-
+/**
+ * GaussianBlur.java
+ * Blurs the image using RenderScript's ScriptIntrinsicBlur.
+ *
+ * @author Shane Scarlett
+ * @version 1.0.0
+ */
 public class GaussianBlur extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.GaussianBlur";
@@ -27,10 +33,21 @@ public class GaussianBlur extends BitmapTransformation
 	private float blurRadius;
 	private static final float RENDERSCRIPT_MAX_BLUR_RADIUS = 25.0f;
 
+	/**
+	 * Default constructor. Specified radius is used to blur the image.
+	 *
+	 * Note: Since RenderScript only supports radii up to 25.0, for values larger than
+	 * the natively supported maximum, GaussianBlur will scale down the image, apply the
+	 * blur, and re-inflate the image to the output dimensions, simulating blur radii
+	 * larger than 25.0.
+	 *
+	 * @param context current context
+	 * @param blurRadius blur radius in pixels, can be fractional
+	 */
 	public GaussianBlur(Context context, float blurRadius)
 	{
 		mContext = context;
-		this.blurRadius = blurRadius;
+		this.blurRadius = Math.max(0f, blurRadius);
 	}
 
 	@Override

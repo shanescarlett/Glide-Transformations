@@ -13,13 +13,24 @@ import com.bumptech.glide.util.Util;
 
 import java.security.MessageDigest;
 
+/**
+ * Greyscale.java
+ * Applies a greyscale effect to the image.
+ *
+ * @author Shane Scarlett
+ * @version 1.0.0
+ */
 public class Greyscale extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Greyscale";
 	private static final byte[] ID_BYTES = ID.getBytes();
 	private Context mContext;
 
-
+	/**
+	 * Default constructor. No other configuration required.
+	 *
+	 * @param  context  current context
+	 */
 	public Greyscale(Context context)
 	{
 		mContext = context;

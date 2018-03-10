@@ -22,7 +22,7 @@ Add the following dependency in the app's build.gradle file:
 
 ```java
 dependencies {
-    implementation 'net.scarlettsystems.android:glide:0.0.4'
+    implementation 'net.scarlettsystems.android:glide:0.1.0'
 }
 ```
 
@@ -61,7 +61,7 @@ Glide.with(this)
 	))
 	.into(imageView);
 ```
-Some transformations have parameters that can be set via builder notation:
+Some transformations have parameters that can be set with a builder pattern:
 ```Java
 Transformation t = new Shadow(this).setBlurRadius(10).setElevation(10).setAngle(45);
 ```
@@ -72,7 +72,7 @@ Transformation t = new Shadow(this).setBlurRadius(10).setElevation(10).setAngle(
 
 ## Versioning
 
-Current version: 0.0.4
+Current version: 0.1.0
 
 ## Authors
 

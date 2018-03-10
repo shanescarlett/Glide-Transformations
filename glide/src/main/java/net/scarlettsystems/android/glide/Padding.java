@@ -31,7 +31,6 @@ public class Padding extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Padding";
 	private static final byte[] ID_BYTES = ID.getBytes();
-	private Context mContext;
 	private int padding;
 	private int colour = Color.argb(0,0,0,0);
 
@@ -39,13 +38,11 @@ public class Padding extends BitmapTransformation
 	 * Default constructor.
 	 * The padding is transparent by default.
 	 *
-	 * @param  context  current context
 	 * @param  padding  thickness of padding in pixels
 	 * @return      returns self
 	 */
-	public Padding(Context context, int padding)
+	public Padding(int padding)
 	{
-		mContext = context;
 		this.padding = padding;
 	}
 
@@ -69,15 +66,15 @@ public class Padding extends BitmapTransformation
 	 * @param  res  the colour as a @ColorRes
 	 * @return      returns self
 	 */
-	public Padding setColourRes(@ColorRes int res)
+	public Padding setColourRes(@ColorRes int res, Context con)
 	{
 		if(Build.VERSION.SDK_INT < 23)
 		{
-			this.colour = mContext.getResources().getColor(res);
+			this.colour = con.getResources().getColor(res);
 		}
 		else
 		{
-			this.colour = mContext.getResources().getColor(res, null);
+			this.colour = con.getResources().getColor(res, null);
 		}
 		return this;
 	}

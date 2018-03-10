@@ -25,21 +25,16 @@ public class Mosaic extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Mosaic";
 	private static final byte[] ID_BYTES = ID.getBytes();
-	private Context mContext;
 	private Integer xPixels, yPixels;
 	private float factor = 1f;
 
 	/**
-	 * Default constructor.
+	 * Returns transformation that can pixellate the image by a specified amount.
 	 * By default and without any further configuration, the transformation
 	 * will do nothing.
 	 *
-	 * @param  context  current context
 	 */
-	public Mosaic(Context context)
-	{
-		mContext = context;
-	}
+	public Mosaic(){}
 
 	/**
 	 * Sets the number of pixels that the pixellated image should be wide.

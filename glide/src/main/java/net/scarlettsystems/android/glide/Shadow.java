@@ -133,8 +133,8 @@ public class Shadow extends BitmapTransformation
 	/**
 	 * Sets the cardinal direction in which the shadow is offset from the image.
 	 *
-	 * @param  d  the cardinal direction as a @Direction
-	 * @return      returns self
+	 * @param d the cardinal direction as a @Direction
+	 * @return returns self
 	 */
 	public Shadow setDirection(@Direction int d)
 	{
@@ -146,8 +146,8 @@ public class Shadow extends BitmapTransformation
 	 * Sets the shadow's colour.
 	 * Shadow is drawn black with 50% opacity by default.
 	 *
-	 * @param  colour  the colour as a @ColorInt
-	 * @return      returns self
+	 * @param colour the colour as a @ColorInt
+	 * @return returns self
 	 */
 	public Shadow setShadowColour(@ColorInt int colour)
 	{

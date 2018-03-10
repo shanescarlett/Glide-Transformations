@@ -1,6 +1,5 @@
 package net.scarlettsystems.android.glide;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -14,21 +13,21 @@ import com.bumptech.glide.util.Util;
 import java.security.MessageDigest;
 
 /**
- * Applies a greyscale effect to the image.
+ * Inverts the colours of the image.
  *
  * @author Shane Scarlett
  * @version 1.0.0
  */
-public class Greyscale extends BitmapTransformation
+public class Inverse extends BitmapTransformation
 {
-	private static final String ID = "net.scarlettsystems.android.transformations.glide.Greyscale";
+	private static final String ID = "net.scarlettsystems.android.transformations.glide.Inverse";
 	private static final byte[] ID_BYTES = ID.getBytes();
 
 	/**
 	 * Default constructor. No other configuration required.
 	 *
 	 */
-	public Greyscale(){}
+	public Inverse(){}
 
 	@Override
 	protected Bitmap transform(BitmapPool pool, Bitmap source, int outWidth, int outHeight)
@@ -36,9 +35,12 @@ public class Greyscale extends BitmapTransformation
 		Bitmap bitmap = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 		//Create Image Paint
 		Paint paint = new Paint();
-		ColorMatrix greyMatrix = new ColorMatrix();
-		greyMatrix.setSaturation(0.0f);
-		paint.setColorFilter(new ColorMatrixColorFilter(greyMatrix));
+		ColorMatrix matrix = new ColorMatrix(new float[]{
+				-1.0f, 0.0f, 0.0f, 0.0f, 255f,
+				0.0f, -1.0f, 0.0f, 0.0f, 255f,
+				0.0f, 0.0f, -1.0f, 0.0f, 255f,
+				0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
+		paint.setColorFilter(new ColorMatrixColorFilter(matrix));
 		//Draw to Canvas
 		Canvas canvas = new Canvas(bitmap);
 		canvas.drawBitmap(source, 0, 0, paint);

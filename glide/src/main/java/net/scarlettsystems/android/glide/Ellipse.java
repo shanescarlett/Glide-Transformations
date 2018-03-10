@@ -35,7 +35,6 @@ public class Ellipse extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Ellipse";
 	private static final byte[] ID_BYTES = ID.getBytes();
-	private Context mContext;
 	private float xDiameter, yDiameter, angle;
 	private boolean isFraction, isCircle;
 	private int colour;
@@ -69,14 +68,13 @@ public class Ellipse extends BitmapTransformation
 	}
 
 	/**
-	 * Default constructor. If nothing else is configured, the transformation
-	 * will produce a perfect circle crop with a transparent background.
+	 * Returns transformation that crops the image by the specified ellipse.
+	 * If nothing else is configured, the transformation will produce a perfect
+	 * circle crop with a transparent background.
 	 *
-	 * @param  context  current context
 	 */
-	public Ellipse(Context context)
+	public Ellipse()
 	{
-		mContext = context;
 		this.isCircle = true;
 		this.isFraction = true;
 		this.xDiameter = 1f;
@@ -190,15 +188,15 @@ public class Ellipse extends BitmapTransformation
 	 * @param res the colour as a @ColorRes
 	 * @return returns self
 	 */
-	public Ellipse setColourRes(@ColorRes int res)
+	public Ellipse setColourRes(@ColorRes int res, Context con)
 	{
 		if(Build.VERSION.SDK_INT < 23)
 		{
-			this.colour = mContext.getResources().getColor(res);
+			this.colour = con.getResources().getColor(res);
 		}
 		else
 		{
-			this.colour = mContext.getResources().getColor(res, null);
+			this.colour = con.getResources().getColor(res, null);
 		}
 		return this;
 	}
@@ -310,13 +308,13 @@ public class Ellipse extends BitmapTransformation
 		char boolCircle;
 		if(isCircle){boolCircle = 't';}else{boolCircle = 'f';}
 
+		messages.add(ID_BYTES);
 		messages.add(ByteBuffer.allocate(Float.SIZE/Byte.SIZE).putFloat(xDiameter).array());
 		messages.add(ByteBuffer.allocate(Float.SIZE/Byte.SIZE).putFloat(yDiameter).array());
 		messages.add(ByteBuffer.allocate(Float.SIZE/Byte.SIZE).putFloat(angle).array());
 		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(colour).array());
 		messages.add(ByteBuffer.allocate(Character.SIZE/Byte.SIZE).putChar(boolCircle).array());
 
-		messageDigest.update(ID_BYTES);
 		for(int c = 0; c < messages.size(); c++)
 		{
 			messageDigest.update(messages.get(c));

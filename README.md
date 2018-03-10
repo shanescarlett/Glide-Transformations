@@ -33,12 +33,14 @@ dependencies {
 | Transformation        | Image           | Description  |
 | ------------- |:-------------------:| ---|
 | Original      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Original.png" width="60%"/>| The original image. |
-| Greyscale      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Greyscale.png" width="60%" />| Desaturates image and produces a greyscale result. |
-| GaussianBlur      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/GaussianBlur.png" width="60%" />| Applies RenderScript Gaussian blur with specified radius. |
-| Mosaic      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Mosaic.png" width="60%" />| Applies a mosaic or pixellation effect. |
 | Padding      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Padding.png" width="60%" />| Adds padding intrinsically to the Bitmap. Useful to use in conjunction with Shadow to prevent clipping. |
 | Ellipse      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Ellipse.png" width="60%" />| Crops image by specified ellipse and angle. Can be used to crop a perfect circle.|
 | Shadow      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Shadow.png" width="60%" />| Adds shadow intrinsically to the Bitmap. Useful for complex shapes where Android cannot render an elevation shadow by default. |
+| Greyscale      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Greyscale.png" width="60%" />| Desaturates image and produces a greyscale result. |
+| Inverse      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Inverse.png" width="60%" />| Inverts the colours of the image. |
+| Flip      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Flip.png" width="60%" />| Flips the image in the specified direction. |
+| GaussianBlur      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/GaussianBlur.png" width="60%" />| Applies RenderScript Gaussian blur with specified radius. |
+| Mosaic      | <img src="https://raw.githubusercontent.com/shanescarlett/Glide-Transformations/master/samples/Mosaic.png" width="60%" />| Applies a mosaic or pixellation effect. |
 
 ### Usage
 

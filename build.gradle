@@ -18,6 +18,7 @@ allprojects {
     repositories {
         jcenter()
         google()
+        maven { url "C:\\Users\\Main\\.m2\\repository" }
     }
 }
 

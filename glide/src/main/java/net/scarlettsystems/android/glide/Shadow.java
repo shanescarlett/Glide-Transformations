@@ -27,7 +27,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 
 /**
- * Shadow.java
  * This transformation applies a shadow intrinsically to the bitmap.
  * This is useful for images with complex shapes where Android does
  * not support elevation shadows. The colour of the shadow, its blur
@@ -48,29 +47,19 @@ public class Shadow extends BitmapTransformation
 	private Context mContext;
 	private float blurRadius, elevation, angle;
 	private int colour;
+
+	@IntDef({EAST, NORTHEAST, NORTH, NORTHWEST, WEST, SOUTHWEST, SOUTH, SOUTHEAST})
 	@Retention(RetentionPolicy.SOURCE)
-	@IntDef
-	({
-		Direction.EAST,
-		Direction.NORTHEAST,
-		Direction.NORTH,
-		Direction.NORTHWEST,
-		Direction.WEST,
-		Direction.SOUTHWEST,
-		Direction.SOUTH,
-		Direction.SOUTHEAST
-	})
-	public @interface Direction
-	{
-		int EAST = 0;
-		int NORTHEAST = 1;
-		int NORTH = 2;
-		int NORTHWEST = 3;
-		int WEST = 4;
-		int SOUTHWEST = 5;
-		int SOUTH = 6;
-		int SOUTHEAST = 7;
-	}
+	public @interface Direction {}
+
+	public static final int EAST = 0;
+	public static final int NORTHEAST = 1;
+	public static final int NORTH = 2;
+	public static final int NORTHWEST = 3;
+	public static final int WEST = 4;
+	public static final int SOUTHWEST = 5;
+	public static final int SOUTH = 6;
+	public static final int SOUTHEAST = 7;
 
 	/**
 	 * Default constructor.
@@ -179,21 +168,21 @@ public class Shadow extends BitmapTransformation
 	{
 		switch(d)
 		{
-			case Direction.EAST:
+			case EAST:
 				return 0;
-			case Direction.NORTHEAST:
+			case NORTHEAST:
 				return 45;
-			case Direction.NORTH:
+			case NORTH:
 				return 90;
-			case Direction.NORTHWEST:
+			case NORTHWEST:
 				return 135;
-			case Direction.WEST:
+			case WEST:
 				return 180;
-			case Direction.SOUTHWEST:
+			case SOUTHWEST:
 				return 225;
-			case Direction.SOUTH:
+			case SOUTH:
 				return 270;
-			case Direction.SOUTHEAST:
+			case SOUTHEAST:
 				return 315;
 			default:
 				throw new IllegalArgumentException("Invalid Direction");

@@ -27,11 +27,12 @@ import java.util.ArrayList;
  * @author Shane Scarlett
  * @version 1.0.0
  */
+@SuppressWarnings("unused, WeakerAccess")
 public class Padding extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Padding";
 	private static final byte[] ID_BYTES = ID.getBytes();
-	private int padding;
+	private int paddingLeft, paddingRight, paddingTop, paddingBottom;
 	private int colour = Color.argb(0,0,0,0);
 
 	/**
@@ -43,7 +44,33 @@ public class Padding extends BitmapTransformation
 	 */
 	public Padding(int padding)
 	{
-		this.padding = padding;
+		paddingLeft = padding;
+		paddingRight = padding;
+		paddingTop = padding;
+		paddingBottom = padding;
+	}
+
+	/**
+	 * Constructor.
+	 * The padding is transparent and zero by default.
+	 *
+	 * @return      returns self
+	 */
+	public Padding()
+	{
+		paddingLeft = 0;
+		paddingRight = 0;
+		paddingTop = 0;
+		paddingBottom = 0;
+	}
+
+	public Padding setPadding(int left, int right, int top, int bottom)
+	{
+		paddingLeft = left;
+		paddingRight = right;
+		paddingTop = top;
+		paddingBottom = bottom;
+		return this;
 	}
 
 	/**
@@ -83,10 +110,10 @@ public class Padding extends BitmapTransformation
 	protected Bitmap transform(BitmapPool pool, Bitmap source, int outWidth, int outHeight)
 	{
 		//Size Image
-		int paddedWidth = Math.max(0, source.getWidth() - (padding * 2));
-		int paddedHeight = Math.max(0, source.getHeight() - (padding * 2));
+		int paddedWidth = Math.max(0, source.getWidth() - (paddingLeft + paddingRight));
+		int paddedHeight = Math.max(0, source.getHeight() - (paddingTop + paddingBottom));
 		Bitmap bitmap = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
-		Rect bitmapBounds = new Rect(padding, padding, paddedWidth + padding, paddedHeight + padding);
+		Rect bitmapBounds = new Rect(paddingLeft, paddingTop, paddedWidth + paddingLeft, paddedHeight + paddingTop);
 		//Create Image Paint
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
@@ -105,7 +132,10 @@ public class Padding extends BitmapTransformation
 		if (object instanceof Padding)
 		{
 			Padding other = (Padding) object;
-			return padding == other.padding
+			return paddingLeft == other.paddingLeft
+					&& paddingRight == other.paddingRight
+					&& paddingTop == other.paddingTop
+					&& paddingBottom == other.paddingBottom
 					&& colour == other.colour;
 		}
 		return false;
@@ -115,8 +145,11 @@ public class Padding extends BitmapTransformation
 	public int hashCode()
 	{
 		return Util.hashCode(ID.hashCode(),
-				Util.hashCode(padding,
-						Util.hashCode(colour)));
+				Util.hashCode(paddingLeft,
+						Util.hashCode(paddingRight,
+								Util.hashCode(paddingTop,
+										Util.hashCode(paddingBottom,
+												Util.hashCode(colour))))));
 	}
 
 	@Override
@@ -125,7 +158,10 @@ public class Padding extends BitmapTransformation
 		ArrayList<byte[]> messages = new ArrayList<>();
 
 		messages.add(ID_BYTES);
-		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(padding).array());
+		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(paddingLeft).array());
+		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(paddingRight).array());
+		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(paddingTop).array());
+		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(paddingBottom).array());
 		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(colour).array());
 
 		for(int c = 0; c < messages.size(); c++)

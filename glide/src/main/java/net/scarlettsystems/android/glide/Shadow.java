@@ -40,6 +40,7 @@ import java.util.ArrayList;
  * @version 1.0.0
  * @see Padding
  */
+@SuppressWarnings("unused, WeakerAccess")
 public class Shadow extends BitmapTransformation
 {
 	private static final String ID = "net.scarlettsystems.android.transformations.glide.Shadow";
@@ -47,6 +48,7 @@ public class Shadow extends BitmapTransformation
 	private Context mContext;
 	private float blurRadius, elevation, angle;
 	private int colour;
+	private static final float RENDERSCRIPT_MAX_BLUR_RADIUS = 25.0f;
 
 	@IntDef({EAST, NORTHEAST, NORTH, NORTHWEST, WEST, SOUTHWEST, SOUTH, SOUTHEAST})
 	@Retention(RetentionPolicy.SOURCE)
@@ -202,23 +204,49 @@ public class Shadow extends BitmapTransformation
 		Paint shadowPaint = new Paint();
 		shadowPaint.setAntiAlias(true);
 		shadowPaint.setColorFilter(new PorterDuffColorFilter(colour, PorterDuff.Mode.SRC_IN));
-		//Render Shadow
-		final RenderScript rs = RenderScript.create(mContext);
-		final Allocation input = Allocation.createFromBitmap( rs, source, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT );
-		final Allocation output = Allocation.createTyped( rs, input.getType() );
-		final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create( rs, Element.U8_4( rs ) );
-		script.setRadius(blurRadius);
-		script.setInput( input );
-		script.forEach( output );
-		output.copyTo( shadow );
-		//Draw to Canvas
-		Canvas canvas = new Canvas(bitmap);
-		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		canvas.drawBitmap(shadow, shadowX, shadowY, shadowPaint);
-		canvas.drawBitmap(source, 0, 0, null);
+
+		if(blurRadius <= RENDERSCRIPT_MAX_BLUR_RADIUS)
+		{
+			//Apply Blur
+			blur(source, shadow, blurRadius);
+			//Draw to Canvas
+			Canvas canvas = new Canvas(bitmap);
+			canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+			canvas.drawBitmap(shadow, shadowX, shadowY, shadowPaint);
+			canvas.drawBitmap(source, 0, 0, null);
+		}
+		else
+		{
+			//Scale
+			float scaleFactor = (RENDERSCRIPT_MAX_BLUR_RADIUS / blurRadius);
+			int scaledWidth = Math.max(1, Math.round((float) source.getWidth() * scaleFactor));
+			int scaledHeight = Math.max(1, Math.round((float) source.getHeight() * scaleFactor));
+			Bitmap scaled = Bitmap.createScaledBitmap(source, scaledWidth, scaledHeight, true);
+			//Apply Blur
+			blur(scaled, scaled, RENDERSCRIPT_MAX_BLUR_RADIUS);
+			//Draw to Canvas
+			Canvas canvas = new Canvas(bitmap);
+			shadow = Bitmap.createScaledBitmap(scaled, source.getWidth(), source.getHeight(), true);
+			canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+			canvas.drawBitmap(shadow, shadowX, shadowY, shadowPaint);
+			canvas.drawBitmap(source, 0, 0, null);
+		}
+
 		//Output
 		shadow.recycle();
 		return bitmap;
+	}
+
+	private void blur(Bitmap bitmap, Bitmap copyTo, float radius)
+	{
+		final RenderScript rs = RenderScript.create(mContext);
+		final Allocation input = Allocation.createFromBitmap( rs, bitmap, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT );
+		final Allocation output = Allocation.createTyped( rs, input.getType() );
+		final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create( rs, Element.U8_4( rs ) );
+		script.setRadius( radius );
+		script.setInput( input );
+		script.forEach( output );
+		output.copyTo( copyTo );
 	}
 
 	@Override
@@ -255,6 +283,7 @@ public class Shadow extends BitmapTransformation
 		messages.add(ByteBuffer.allocate(Float.SIZE/Byte.SIZE).putFloat(elevation).array());
 		messages.add(ByteBuffer.allocate(Float.SIZE/Byte.SIZE).putFloat(angle).array());
 		messages.add(ByteBuffer.allocate(Integer.SIZE/Byte.SIZE).putInt(colour).array());
+		messages.add(ByteBuffer.allocate(Long.SIZE).putLong(System.currentTimeMillis()).array());
 
 		for(int c = 0; c < messages.size(); c++)
 		{

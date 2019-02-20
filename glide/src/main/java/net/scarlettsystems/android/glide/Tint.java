@@ -13,7 +13,6 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
-import android.util.Log;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
@@ -74,7 +73,6 @@ public class Tint extends BitmapTransformation
 		mContext = context;
 		this.tintMode = PorterDuff.Mode.SRC_IN;
 		this.colour = Color.argb(128,0,0,0);
-		Log.e("Bitmap","4");
 	}
 
 	/**
